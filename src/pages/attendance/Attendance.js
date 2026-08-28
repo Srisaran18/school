@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { canWrite } from "../../utils/constants";
 import {
@@ -16,7 +16,7 @@ const Attendance = () => {
   const [form, setForm] = useState({ studentId: "", date: "", status: "present", remarks: "" });
   const [error, setError] = useState("");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [attendanceData, studentData] = await Promise.all([
         getAttendance(),
@@ -27,11 +27,11 @@ const Attendance = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [user?.role]);
 
   useEffect(() => {
     fetchData();
-  }, [user?.role]);
+  }, [fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

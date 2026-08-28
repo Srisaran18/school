@@ -15,9 +15,7 @@ import { ROLES } from "./utils/constants";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<Navigate to="/login/staff" replace />} />
-      <Route path="/login/staff" element={<Login loginType="staff" />} />
-      <Route path="/login/student" element={<Login loginType="student" />} />
+      <Route path="/login" element={<Login />} />
 
       <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.STAFF, ROLES.STUDENT]} />}>
         <Route element={<Layout />}>

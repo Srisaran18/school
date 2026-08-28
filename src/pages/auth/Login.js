@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { FiMail, FiLock, FiBookOpen } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
+import "./Login.css";
 
-const Login = ({ loginType }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,15 +13,16 @@ const Login = ({ loginType }) => {
   const navigate = useNavigate();
 
   if (authLoading) {
-    return <div className="login-page min-vh-100 d-flex align-items-center justify-content-center text-white">Loading...</div>;
+    return (
+      <div className="login-shell">
+        <div className="login-loading">Loading...</div>
+      </div>
+    );
   }
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
-
-  const isStaffLogin = loginType === "staff";
-  const title = isStaffLogin ? "Staff & Admin Login" : "Student Login";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +30,7 @@ const Login = ({ loginType }) => {
     setLoading(true);
 
     try {
-      await login(email, password, loginType);
+      await login(email, password);
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -37,57 +40,78 @@ const Login = ({ loginType }) => {
   };
 
   return (
-    <div className="login-page min-vh-100 d-flex align-items-center justify-content-center">
-      <div className="card shadow login-card">
-        <div className="card-body p-4">
-          <div className="text-center mb-4">
-            <h3 className="fw-bold text-primary">School Management</h3>
-            <p className="text-muted mb-0">{title}</p>
+    <div className="login-shell">
+      <div className="login-bg-pattern login-bg-pattern--top" aria-hidden="true" />
+      <div className="login-bg-pattern login-bg-pattern--bottom" aria-hidden="true" />
+
+      <div className="login-card">
+        <div className="login-brand">
+          <div
+            className="login-brand__image"
+            style={{
+              backgroundImage:
+                "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-_SsjwHvWyleKec0W9FoPYTScH6JnfWk7mJJecsMCQw&s=10')",
+            }}
+          />
+          <div className="login-brand__overlay">
+            <h1 className="login-brand__title">Greenwood School</h1>
+            <p className="login-brand__tagline">
+              Education is the passport to the future, for tomorrow belongs to those who prepare for it today.
+            </p>
+          </div>
+        </div>
+
+        <div className="login-form-panel">
+          <div className="login-form-panel__icon" aria-hidden="true">
+            <FiBookOpen />
           </div>
 
-          {error && <div className="alert alert-danger py-2">{error}</div>}
+          <h2 className="login-form-panel__title">Welcome</h2>
+          <p className="login-form-panel__subtitle">Login with Email</p>
 
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={isStaffLogin ? "admin@school.com" : "student@school.com"}
-                required
-              />
+          {error && <div className="login-alert">{error}</div>}
+
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="login-field">
+              <label htmlFor="email">Email Id</label>
+              <div className="login-field__control">
+                <FiMail className="login-field__icon" />
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
             </div>
-            <div className="mb-3">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                required
-              />
+
+            <div className="login-field">
+              <label htmlFor="password">Password</label>
+              <div className="login-field__control">
+                <FiLock className="login-field__icon" />
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
             </div>
-            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-              {loading ? "Signing in..." : "Login"}
+
+            <button type="submit" className="login-submit" disabled={loading}>
+              {loading ? "Signing in..." : "LOGIN"}
             </button>
           </form>
 
-          <div className="text-center mt-3">
-            {isStaffLogin ? (
-              <Link to="/login/student">Student Login</Link>
-            ) : (
-              <Link to="/login/staff">Staff / Admin Login</Link>
-            )}
+          <div className="login-decor" aria-hidden="true">
+            <span className="login-decor__item">📚</span>
+            <span className="login-decor__item">🎓</span>
+            <span className="login-decor__item">🏫</span>
           </div>
-
-          {isStaffLogin && (
-            <p className="text-muted small text-center mt-3 mb-0">
-              Default admin: admin@school.com / admin123
-            </p>
-          )}
         </div>
       </div>
     </div>

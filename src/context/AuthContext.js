@@ -28,8 +28,8 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (email, password, loginType) => {
-    const data = await loginApi(email, password, loginType);
+  const login = async (email, password) => {
+    const data = await loginApi(email, password);
     localStorage.setItem("token", data.token);
     setUser(data);
     return data;

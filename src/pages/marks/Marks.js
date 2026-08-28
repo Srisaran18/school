@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { canWrite } from "../../utils/constants";
 import { createMark, deleteMark, getMarks, getStudents, updateMark } from "../../api/services";
@@ -21,7 +21,7 @@ const Marks = () => {
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [marksData, studentData] = await Promise.all([
         getMarks(),
@@ -32,11 +32,11 @@ const Marks = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [user?.role]);
 
   useEffect(() => {
     fetchData();
-  }, [user?.role]);
+  }, [fetchData]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

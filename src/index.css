@@ -42,17 +42,6 @@ body {
   min-height: 100vh;
 }
 
-.login-page {
-  background: linear-gradient(135deg, #1e3a8a, #2563eb);
-}
-
-.login-card {
-  width: 100%;
-  max-width: 420px;
-  border: none;
-  border-radius: 16px;
-}
-
 .stat-card h3 {
   color: var(--primary-color);
   margin-bottom: 0;
